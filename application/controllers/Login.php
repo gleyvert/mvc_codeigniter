@@ -20,15 +20,34 @@ class Login extends CI_Controller {
 	 */
 	public function __construct(){
 		parent:: __construct();
-		$this->load->helper(array('getmenu', 'url'));
+		$this->load->helper(array('getmenu', 'url','auth/login_rules'));
+		$this->load->library('form_validation');
+		
 	}
 	
 	 public function index()
 	{
 		$data['menu'] = main_menu();
 		$this->load->view('login',$data);
+		
 	}
 
+	public function validate(){
+		//$data['menu'] = main_menu();
+		$this->form_validation->set_error_delimiters('', '');
+		$rules = (getLoginRules());
+		$this->form_validation->set_rules($rules);
+		if($this->form_validation->run() === FALSE){
+			//$this->load->view('login', $data);
+			$error = array(
+				'email' => form_error('email'),
+				'password' => form_error('password'),
+			);
+			echo json_encode($error);
+		}else{
+			
+		}
+	}
 
 
 	/*
