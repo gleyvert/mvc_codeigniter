@@ -10,13 +10,13 @@
 </head>
 
 <body>
-    <?=  validation_errors();?>
-    <?= form_error('email')?>
+    <?= validation_errors(); ?>
+    <?= form_error('email') ?>
     <div class="container">
         <div class="row justify-content-lg-center">
             <div class="col-lg-6">
 
-                <h1 class="text-center" >Login</h1>
+                <h1 class="text-center">Login</h1>
                 <?php //var_dump($menu); 
                 ?>
                 <ul>
@@ -24,18 +24,27 @@
                         <li><a href="<?= $item['url'] ?>"><?= $item['title'] ?></a></li>
                     <?php endforeach ?>
                 </ul>
-                <form action="<?= base_url('login/validate') ?>" method="POST" id="form_login" >
-                    <div class="form-group">
+                <form action="<?= base_url('login/validate') ?>" method="POST" id="form_login">
+                    <div class="form-group" id="email">
                         <label for="exampleInputEmail1">Correo</label>
                         <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <div class="invalid-feedback">
+
+                        </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="password">
                         <label for="exampleInputPassword1">Password</label>
                         <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                    </div>
+                        <div class="invalid-feedback">
 
-                    <button type="submit" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </div>
+                    <div class="form-group" id="alert">
+
+                    </div>
                 </form>
             </div>
         </div>
