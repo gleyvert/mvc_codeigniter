@@ -7,8 +7,10 @@
             data: $(this).serialize(),
             success: function(data){
                 var json = JSON.parse(data);
-                console.log(json.email);
-                console.log(json);
+                //console.log(json.email);
+               // console.log(json);
+               console.log(json);
+               window.location.replace(json.url)
             },
             statusCode: {
                 400: function(xhr){
