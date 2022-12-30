@@ -61,6 +61,7 @@ class Login extends CI_Controller {
 				'nombre_usuario' => $res->nombre_usuario,
 				'is_logged' => TRUE
 			);
+			
 			$this->session->set_userdata($data);
 			$this->session->set_flashdata('msg','Bienvenido al sistema '.$data['nombre_usuario']);
 			//var_dump($res);
