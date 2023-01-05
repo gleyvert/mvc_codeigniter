@@ -10,7 +10,7 @@ class Users extends CI_Model {
             'correo' => $datos['correo'],
             'contrasena' => $datos['contrasena'],
             'status' => 1,
-            'range' => 2,
+            'range' => $datos['range'],
            );
            
            if(!$this->db->insert('usuarios' , $datos)){
