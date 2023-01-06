@@ -1,23 +1,26 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-class Users extends CI_Controller {
+defined('BASEPATH') or exit('No direct script access allowed');
+class Users extends CI_Controller
+{
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
-       // $this->load->library(array('session'));
-       $this->load->library(array('form_validation','email','pagination'));
-       $this->load->helper(array('users/users_rules','string'));
+        // $this->load->library(array('session'));
+        $this->load->library(array('form_validation', 'email', 'pagination'));
+        $this->load->helper(array('users/users_rules', 'string'));
         $this->load->model('ModelsUsers');
     }
 
-    public function index($offset = 0){
+    public function index($offset = 0)
+    {
         $data = $this->ModelsUsers->getUsers();
         $config['base_url'] = base_url('users/index');
-        $config['per_page'] = 3;
+        $config['per_page'] = 4;
         $config['total_rows'] = count($data);
-        
-        $config['full_tag_open']= '<p class="paggin text-center"><nav aria-label="Page navigation example"><ul class="pagination">';
-        $config['full_tag_close']='  </ul></nav></p>';
+
+        $config['full_tag_open'] = '<p class="paggin text-center"><nav aria-label="Page navigation example"><ul class="pagination">';
+        $config['full_tag_close'] = '  </ul></nav></p>';
         $config['num_tag_open'] = '<li class="page-item"><span class="page-link">';
         $config['num_tag_close'] = '</span></li>';
         $config['cur_tag_open'] = '<li class="page-item active"><span class="page-link">';
@@ -37,31 +40,58 @@ class Users extends CI_Controller {
 
 
         $this->pagination->initialize($config);
-        
+
         $page = $this->ModelsUsers->getPaginate($config['per_page'], $offset);
 
 
 
-        $this->getTemplate($this->load->view('admin/show_users',array('data' => $page),TRUE));
+        $this->getTemplate($this->load->view('admin/show_users', array('data' => $page), TRUE));
     }
 
-    public function create(){
-        $vista = $this->load->view('admin/create_user','',TRUE);
+    public function create()
+    {
+        $vista = $this->load->view('admin/create_user', '', TRUE);
         $this->getTemplate($vista);
     }
 
-    public function update(){
-        echo $this->input->post('nombre');
-        $this->form_validation->set_rules(getUpdateUserRules());
-        if($this->form_validation->run() === FALSE){
-            $view = $this->load->view('admin/edit_user','',true);
-            $this->getTemplate($view);
+    public function update()
+    {
+        if ($this->input->server('REQUEST_METHOD') === 'POST') {
+            $nombre = $this->input->post('nombre');
+            $id_usuario = $this->input->post('id_usuario');
+            $apellidos = $this->input->post('apellidos');
+            $cedula = $this->input->post('cedula');
+            $especialidad = $this->input->post('especialidad');
+            $area = $this->input->post('area');
+
+            $username = $this->input->post('username');
+
+            $this->form_validation->set_rules(getUpdateUsersRules());
+            if ($this->form_validation->run() === FALSE) {
+                $user = $this->ModelsUsers->getUser($id_usuario);
+
+                $view = $this->load->view('admin/edit_user', array('user' => $user), true);
+                $this->getTemplate($view);
+            } else {
+                #actualizar
+                //show_404();
+                $data = array(
+                    'nombre' => $nombre,
+                    'apellido' => $apellidos,
+                    'cedula' => $cedula,
+                    'especialidad' => $especialidad,
+                    'area' => $area,
+                );
+                $this->ModelsUsers->updateUser($id_usuario, $data);
+                $this->session->set_flashdata('msg', 'El usuario ' . $username . ' Fue actualizado correctamente');
+                redirect('users');
+            }
         }else{
-            #actualizar
             show_404();
         }
     }
-    public function store(){
+    public function store()
+    {
         $user = $this->input->post('user');
         $correo = $this->input->post('correo');
         $range = $this->input->post('range');
@@ -72,18 +102,18 @@ class Users extends CI_Controller {
         $cedula = $this->input->post('cedula');
 
         $this->form_validation->set_rules(getCreateUserRules());
-        if($this->form_validation->run() == FALSE){
+        if ($this->form_validation->run() == FALSE) {
             $this->output->set_status_header(400);
-        }else{
+        } else {
             //echo 'todo esta bien';
             $user = array(
                 'nombre_usuario' => $user,
-                'contrasena' =>random_string('alnum', 8),
+                'contrasena' => random_string('alnum', 8),
                 'correo' => $correo,
                 'range' => $range,
                 'status' => 1,
             );
-            $user_info= array(
+            $user_info = array(
                 'nombre' => $name,
                 'apellido' => $lastname,
                 'cedula' => $cedula,
@@ -91,51 +121,51 @@ class Users extends CI_Controller {
                 'area' => $area,
 
             );
-            if(!$this->ModelsUsers->save($user,$user_info)){
+            if (!$this->ModelsUsers->save($user, $user_info)) {
                 $this->output->set_status_header(500);
-            }else{
+            } else {
                 $this->sendEmail($user);
-                 $this->session->set_flashdata('msg', 'El usuario ha sido registrado');
-            redirect(base_url('users'));
+                $this->session->set_flashdata('msg', 'El usuario ha sido registrado');
+                redirect(base_url('users'));
             }
-
         }
 
-        $vista = $this->load->view('admin/create_user','',TRUE);
+        $vista = $this->load->view('admin/create_user', '', TRUE);
         $this->getTemplate($vista);
     }
 
-    public function edit($id = 0){
+    public function edit($id = 0)
+    {
         //echo $id;
         $user = $this->ModelsUsers->getUser($id);
-       // echo json_encode($user);
-        $view = $this->load->view('admin/edit_user',array('user' =>$user),TRUE);
+        // echo json_encode($user);
+        $view = $this->load->view('admin/edit_user', array('user' => $user), TRUE);
         $this->getTemplate($view);
     }
-    public function sendEmail($data){
+    public function sendEmail($data)
+    {
         $this->email->from('sistema@hospidev.com', 'Hospidev');
         $this->email->to($data['correo']);
-      
-        
+
+
         $this->email->subject('Datos de cuenta');
 
-        $vistaWelcome = $this->load->view('emails/welcome',$data,TRUE);
+        $vistaWelcome = $this->load->view('emails/welcome', $data, TRUE);
         $this->email->message($vistaWelcome);
-        
+
         $this->email->send();
     }
 
-    public function getTemplate($view){
+    public function getTemplate($view)
+    {
         $data = array(
-            'head' => $this->load->view('layout/head','',TRUE),
-            'nav' => $this->load->view('layout/nav','',TRUE),
-            'aside' => $this->load->view('layout/aside','',TRUE),
-            'footer' => $this->load->view('layout/footer','',TRUE),
+            'head' => $this->load->view('layout/head', '', TRUE),
+            'nav' => $this->load->view('layout/nav', '', TRUE),
+            'aside' => $this->load->view('layout/aside', '', TRUE),
+            'footer' => $this->load->view('layout/footer', '', TRUE),
             //'content' => $this->load->view('admin/show_users','',TRUE),
-            'content'=> $view,
+            'content' => $view,
         );
         $this->load->view('dashboard', $data);
     }
 }
-
-?>

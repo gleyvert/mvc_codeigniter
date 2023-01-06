@@ -23,6 +23,11 @@ class ModelsUsers extends CI_Model
         $sql = $this->db->order_by('id_usuario','DESC')->get('usuarios',$limit,$offset);
         return $sql->result();
     }
+    public function updateUser($id,$data){
+        $this->db->where('id_usuario',$id);
+        $this->db->update('medicos', $data);
+        
+    }
     public function getUser($id){
         // SELECT *
         // FROM usuarios

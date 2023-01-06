@@ -1,6 +1,6 @@
 <?php
 if (!function_exists('getUpdateUsersRules')){
-    function getUpdateUserRules(){
+    function getUpdateUsersRules(){
         return array(
             array(
                 'field' => 'nombre',

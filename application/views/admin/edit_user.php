@@ -18,19 +18,19 @@
                 <input type="text" name="correo" value="<?= set_value('correo', isset($user['correo']) ? $user['correo'] : '')?>" class="form-control" placeholder="" readonly>
                 <p><?=form_error('correo')?></p>
             </div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-4">
                 <label for="">Status</label>
                 <input type="text" name="status" value="<?= set_value('status', isset($user['status']) ? $user['status'] : '')?>" class="form-control" placeholder="" readonly>
             </div>
-            <div class="col">
+           <!-- <div class="col">
                 <label for="">Rango de usuario</label>
                 <select name="range" id="" class="custom-select">
                     <option selected value="">Seleccione el rango</option>
                     <option <?= set_value('range', isset($user['range']) ? $user['range'] : '') == 'admin' ? 'selected' : ''; ?> value="admin">Administrador</option>
                     <option <?= set_value('range', isset($user['range']) ? $user['range'] : '') == 'user' ? 'selected' : ''; ?> value="user">Usuario</option>
                 </select>
-                <div class="text-danger"><?= form_error('range') ?></div>
-            </div>
+                <p><?= form_error('range','<p class="text-danger">','</p>')?></p>
+            </div>-->
         </div>
         <br>
         <h3>Informacion del usuario</h3>
@@ -39,10 +39,12 @@
             <div class="col-7">
                 <label for="">Nombre(s)</label>
                 <input type="text" name="nombre" value="<?= set_value('nombre', isset($user['nombre']) ? $user['nombre'] : '') ?>" class="form-control" placeholder="Inserte nombre">
+                <?= form_error('nombre', '<p class="text-danger">','</p>')?>
             </div>
             <div class="col">
                 <label for="">Apellidos</label>
                 <input type="text" name="apellidos" value="<?= set_value('apellidos', isset($user['apellido']) ? $user['apellido'] : ''); ?>" class="form-control" placeholder="Inserte apellido">
+                <p><?= form_error('apellidos','<p class="text-danger">','</p>')?></p>
             </div>
             <div class="col">
                 <label for="">Area</label>
@@ -52,8 +54,7 @@
                     <option <?= set_value('area', isset($user['area']) ? $user['area'] : '') == 'user' ? 'selected' : ''; ?> value="user">Genetica</option>
                     <option <?= set_value('area', isset($user['area']) ? $user['area'] : '') == 'user' ? 'selected' : ''; ?> value="user">Clinica del higado</option>
                 </select>
-                <div class="text-danger"><?= form_error('area')?></div>
-            </div>
+                <p><?= form_error('area','<p class="text-danger">','</p>')?></p>            </div>
         </div>
     </div>
     <div class="form-group">
@@ -61,11 +62,12 @@
             <div class="col-7">
                 <label for="">Especialidad</label>
                 <input type="text" name="especialidad" value="<?=set_value('especialidad', isset($user['especialidad']) ? $user['especialidad'] : '') ; ?>"  placeholder="Especialidad" class="form-control">
+                <p><?= form_error('especialidad','<p class="text-danger">','</p>')?></p>
             </div>
             <div class="col-5">
                 <label for="">Cedula</label>
                 <input type="text" name="cedula" value="<?= set_value('cedula', isset($user['cedula']) ? $user['cedula'] : '');?>" placeholder="Cedula" class="form-control">
-                <p><?= form_error('cedula')?></p>
+                <p><?= form_error('cedula','<p class="text-danger">','</p>')?></p>
             </div>
         </div>
     </div>

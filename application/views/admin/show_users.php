@@ -1,3 +1,9 @@
+
+<?php if($msg = $this->session->flashdata('msg')):?>
+<div class="alert alert-success text-center" role="alert">
+  <?= $msg?>
+</div>
+<?php endif ; ?>
 <h1 class="text-center">Tabla de lista de usuarios registrados</h1>
 
 
@@ -20,7 +26,7 @@
                 <td><?= $item->correo ?></td>
                 <td><?= $item->status == 1 ? 'activo' : 'inactivo'; ?></td>
                 <td><?= $item->range ?></td>
-                <td><a href="<?= base_url('users/edit/'.$item->id_usuario)?>" class="btn btn-outline-success">Editar</a> / <a href="" class="btn btn-outline-danger">Eliminar</a>
+                <td><a href="<?= base_url('users/edit/'.$item->id_usuario)?>" class="btn btn-outline-success">Editar</a> / <a href="#" id="delete" data-id="<?= $item->id_usuario?>" class="btn btn-outline-danger">Eliminar</a>
                 </td>
             </tr>
         <?php endforeach; ?>
