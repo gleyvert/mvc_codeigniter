@@ -25,7 +25,7 @@
                 <td><?= $item->nombre_usuario ?></td>
                 <td><?= $item->correo ?></td>
                 <td><?= $item->status == 1 ? 'activo' : 'inactivo'; ?></td>
-                <td><?= $item->range ?></td>
+                <td><?= $item->range?></td>
                 <td><a href="<?= base_url('users/edit/'.$item->id_usuario)?>" class="btn btn-outline-success">Editar</a> / <a href="#" id="delete" data-id="<?= $item->id_usuario?>" class="btn btn-outline-danger">Eliminar</a>
                 </td>
             </tr>

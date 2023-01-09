@@ -26,7 +26,7 @@ class ModelsUsers extends CI_Model
     public function updateUser($id,$data){
         $this->db->where('id_usuario',$id);
         $this->db->update('medicos', $data);
-        
+
     }
     public function getUser($id){
         // SELECT *
@@ -37,5 +37,9 @@ class ModelsUsers extends CI_Model
         $this->db->join('medicos','usuarios.id_usuario = medicos.id_usuario');
         $user = $this->db->get_where('usuarios', array('usuarios.id_usuario'=>$id),1);
         return $user->row_array();
+    }
+    public function deleteUser($id){
+        $this->db->where('id_usuario', $id);
+        $this->db->delete('usuarios');
     }
 }

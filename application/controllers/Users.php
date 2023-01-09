@@ -48,6 +48,19 @@ class Users extends CI_Controller
         $this->getTemplate($this->load->view('admin/show_users', array('data' => $page), TRUE));
     }
 
+    public function delete()
+    {
+        $_id = $this->input->post('id', true);
+        if(empty($_id)){
+            $this->output
+            ->set_status_header(400)
+            ->set_output(json_encode(array('msg' => 'El id no puede se vacio ')));
+        }else{
+           $this->ModelsUsers->deleteUser($_id);
+           $this->output->set_status_header(200);
+        }
+    }
+
     public function create()
     {
         $vista = $this->load->view('admin/create_user', '', TRUE);
